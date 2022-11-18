@@ -1,0 +1,10 @@
+node_modules/
+.DS_Store
+.idea
+.vscode/
+
+## exclude build files
+src-js
+
+
+
