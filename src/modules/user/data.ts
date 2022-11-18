@@ -13,6 +13,7 @@ export async function insertUser(userPayload: User): Promise<RawUser|null> {
     lastName: userPayload.lastName,
     email: userPayload.email,
     password: userPayload.password,
+    role: userPayload.role,
   });
   const { _id } = await category.save();
   const user = await findOneUser(_id.toString());

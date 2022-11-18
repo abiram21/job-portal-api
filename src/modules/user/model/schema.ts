@@ -12,6 +12,7 @@ const userSchema = new Schema({
       /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
   },
   password: { type: String, required: true },
+  role: { type: String, required: true}
 }, { timestamps: true });
 
 const User = mongoose.model<RawUser>("User", userSchema);

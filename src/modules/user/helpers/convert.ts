@@ -7,7 +7,9 @@ const convert = (rawUser: RawUser) => {
     lastName: rawUser.lastName,
     email: rawUser.email,
     password: rawUser.password,
+    role: rawUser.role,
     createdAt: rawUser.createdAt,
+
   };
   return user;
 };
