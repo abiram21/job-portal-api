@@ -74,6 +74,7 @@ const login = async (req: Request) => {
   }
   throw new Error("Invalid credentials");
 };
+
 const service = {
   getUsers,
   saveUser,

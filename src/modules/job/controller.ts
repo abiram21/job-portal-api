@@ -41,21 +41,3 @@ export const deleteJob = async (req: Request, res: Response) => {
     res.status(400).json(errorResponse(error.message));
   }
 };
-
-export const applyJob = async (req: Request, res: Response) => {
-  try {
-    await service.applyJob(req);
-    res.status(200).json(successResponse("Job applied sucessfully"));
-  } catch (error: any) {
-    res.status(400).json(errorResponse(error.message));
-  }
-};
-
-export const getAppliedJob = async (req: Request, res: Response) => {
-  try {
-    const application: Array<Job> = await service.getAppliedJob(req);
-    res.status(200).json(successResponse(application));
-  } catch (error: any) {
-    res.status(400).json(errorResponse(error.message));
-  }
-};
