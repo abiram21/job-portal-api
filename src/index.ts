@@ -1,6 +1,6 @@
 import express from "express";
 import http from 'http';
-import appMiddleware from './app';
+import appMiddleware from './middlewares/express';
 
 var app = express();
 const port = process.env.PORT || 3000;

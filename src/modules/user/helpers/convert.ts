@@ -1,4 +1,4 @@
-import { RawUser, User } from "../model/type";
+import { RawUser, User } from "../types/user";
 
 const convert = (rawUser: RawUser) => {
   const user: User = {
@@ -6,7 +6,6 @@ const convert = (rawUser: RawUser) => {
     firstName: rawUser.firstName,
     lastName: rawUser.lastName,
     email: rawUser.email,
-    password: rawUser.password,
     role: rawUser.role,
     createdAt: rawUser.createdAt,
 

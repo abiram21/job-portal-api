@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { RawUser } from "./type";
+import { RawUser } from "../types/user";
 
 const userSchema = new Schema({
   firstName: { type: String, required: true },

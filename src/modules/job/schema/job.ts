@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import { RawJob } from "./type";
+import { RawJob } from "../types/raw-job";
 
 const jobSchema = new Schema({
   title: { type: String, required: true },

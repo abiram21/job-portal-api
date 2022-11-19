@@ -1,4 +1,5 @@
-import { RawJob, Job } from "../model/type";
+import { RawJob, Job } from "../types";
+import config from "../../../config/common";
 
 const convert = (rawJob: RawJob) => {
   const user: Job = {
@@ -8,8 +9,7 @@ const convert = (rawJob: RawJob) => {
     active: rawJob.active,
     company: rawJob.company,
     salary: rawJob.salary,
-    image: rawJob.image,
-
+    image: config.baseURL.concat("/", rawJob.image),
   };
   return user;
 };

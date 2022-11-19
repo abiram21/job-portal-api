@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+import { ObjectId } from "mongoose";
 
 export enum RoleEnum {
   ADMIN = "ADMIN",
@@ -9,7 +9,7 @@ export type User = {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
+  password?: string;
   role: RoleEnum;
   createdAt?: Date;
 };

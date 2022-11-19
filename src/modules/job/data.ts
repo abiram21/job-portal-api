@@ -1,13 +1,15 @@
-import JobModel from "./model/schema";
-import { Job, RawJob } from "./model/type";
+import JobSchema from "./schema/job";
+import ApplicationSchema from "./schema/application";
+import { Job, RawApplicationJob, RawJob } from "./types";
+import { RawApplication, Application } from "./types";
 
-export async function findJobs(query:any): Promise<RawJob[]> {
-  const users = await JobModel.find(query);
+export async function findJobs(query: any): Promise<RawJob[]> {
+  const users = await JobSchema.find(query);
   return users;
 }
 
-export async function insertJob(userPayload: Job): Promise<RawJob|null> {
-  const job = new JobModel({
+export async function insertJob(userPayload: Job): Promise<RawJob | null> {
+  const job = new JobSchema({
     title: userPayload.title,
     description: userPayload.description,
     active: userPayload.active,
@@ -20,12 +22,46 @@ export async function insertJob(userPayload: Job): Promise<RawJob|null> {
   return user;
 }
 
-export async function findOneJob(id: string): Promise<RawJob|null> {
-  const user: RawJob | null = await JobModel.findById(id);
+export async function findOneJob(id: string): Promise<RawJob | null> {
+  const user: RawJob | null = await JobSchema.findById(id);
   return user;
 }
 
-export async function removeJob(id: string){
-  const user = await JobModel.deleteOne({id});
+export async function removeJob(id: string) {
+  const user = await JobSchema.deleteOne({ _id: id });
   return user;
+}
+
+export async function insertApplication(
+  applicationPayload: Application
+): Promise<string | null> {
+  const application = new ApplicationSchema({
+    user: applicationPayload.userId,
+    jobs: applicationPayload.jobs,
+  });
+  const { _id } = await application.save();
+  return _id.toString();
+}
+
+export async function updateApplication(userId: string, setQuery: any) {
+  const res = await ApplicationSchema.updateOne({ user: userId }, setQuery);
+  return res;
+}
+
+export async function findOneApplication(
+  userId: string
+): Promise<RawApplication | null> {
+  const application: RawApplication | null = await ApplicationSchema.findOne({
+    user: userId,
+  });
+  return application;
+}
+
+export async function findApplications(userId: string) {
+  const application: RawApplicationJob | null = await ApplicationSchema.findOne(
+    {
+      user: userId,
+    }
+  ).populate("jobs");
+  return application;
 }

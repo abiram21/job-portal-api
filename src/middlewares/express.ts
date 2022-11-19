@@ -1,23 +1,16 @@
 import { json } from "body-parser";
 import { Application, Request, Response } from "express";
-import mongoose from "mongoose";
-import route from "./route";
+import route from "../route";
+import express from "express";
+import mongoConnect from "../db/mongo";
 
 const appMiddleware = function (app: Application) {
   app.use(json());
 
-  // DB conncection
-  mongoose
-  .connect(
-    "mongodb://127.0.0.1:27017/jobportal",
-  )
-  .then(() => {
-    console.log("Successfully connected to MongoDB!");
-  })
-  .catch((error) => {
-    console.log("Unable to connect to MongoDB!");
-    console.error(error);
-  });
+  app.use("/src/assets", express.static("src/assets"));
+
+  // Mongo DB conncection
+  mongoConnect();
 
   //All defined endpoints
   route(app);
