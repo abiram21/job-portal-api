@@ -8,19 +8,18 @@ import {
   removeJob,
   updateApplication,
 } from "./data";
-import { Request } from "express";
 import { Application, Job, RawApplicationJob, RawJob } from "./types";
 import convert from "./helpers/convert";
 import jobValidator from "./helpers/job-validator";
 import { isValidId } from "../../utils/common";
 
-const getJobs = async (req: Request): Promise<Job[]> => {
+const getJobs = async (req: any): Promise<Job[]> => {
   const rawJobs: Array<RawJob> = await findJobs({});
   const jobs: Array<Job> = rawJobs.map(convert);
   return jobs;
 };
 
-const getJob = async (req: Request): Promise<Job> => {
+const getJob = async (req: any): Promise<Job> => {
   if (!isValidId(req.params.id)) throw new Error("Invalid job id");
 
   const rawJob: RawJob | null = await findOneJob(req.params.id);
@@ -37,7 +36,7 @@ const saveJob = async (req: any): Promise<Job> => {
     active: req.body.active,
     company: req.body.company,
     salary: req.body.salary,
-    image: req.file.path,
+    image: req?.file?.path,
   };
   jobValidator(job);
   const insertedJob: RawJob | null = await insertJob(job);

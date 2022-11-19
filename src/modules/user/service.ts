@@ -68,7 +68,7 @@ const login = async (req: Request) => {
       }
     );
     return {
-      userId: checkUser[0]._id,
+      userId: checkUser[0]._id.toString(),
       token,
     };
   }

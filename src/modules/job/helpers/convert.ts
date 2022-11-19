@@ -10,6 +10,7 @@ const convert = (rawJob: RawJob) => {
     company: rawJob.company,
     salary: rawJob.salary,
     image: config.baseURL.concat("/", rawJob.image),
+    postedAt: rawJob.createdAt,
   };
   return user;
 };

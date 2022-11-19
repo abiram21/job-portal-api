@@ -8,5 +8,5 @@ export interface RawJob {
   active: boolean;
   company: string;
   salary: number;
-  createdAt?: Date;
+  createdAt: Date;
 }

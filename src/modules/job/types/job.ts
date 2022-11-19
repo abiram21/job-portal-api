@@ -8,5 +8,5 @@ export type Job = {
   active: boolean;
   company: string;
   salary: number;
-  createdAt?: Date;
+  postedAt?: Date;
 };
