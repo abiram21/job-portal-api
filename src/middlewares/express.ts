@@ -3,6 +3,8 @@ import { Application, Request, Response } from "express";
 import route from "../route";
 import express from "express";
 import mongoConnect from "../db/mongo";
+import swaggerUi from 'swagger-ui-express';
+const swaggerDocument = require('./swagger.json');
 
 const appMiddleware = function (app: Application) {
   app.use(json());
@@ -12,6 +14,7 @@ const appMiddleware = function (app: Application) {
   // Mongo DB conncection
   mongoConnect();
 
+  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
   //All defined endpoints
   route(app);
 

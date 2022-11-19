@@ -43,8 +43,8 @@ export async function insertApplication(
   return _id.toString();
 }
 
-export async function updateApplication(userId: string, setQuery: any) {
-  const res = await ApplicationSchema.updateOne({ user: userId }, setQuery);
+export async function updateApplication(condition: any, setQuery: any) {
+  const res = await ApplicationSchema.updateOne(condition, setQuery);
   return res;
 }
 
@@ -57,11 +57,7 @@ export async function findOneApplication(
   return application;
 }
 
-export async function findApplications(userId: string) {
-  const application: RawApplicationJob | null = await ApplicationSchema.findOne(
-    {
-      user: userId,
-    }
-  ).populate("jobs");
+export async function findApplications(query: any) {
+  const application: RawApplicationJob | null = await ApplicationSchema.findOne(query).populate("jobs");
   return application;
 }

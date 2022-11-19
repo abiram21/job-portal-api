@@ -47,14 +47,27 @@ const saveJob = async (req: any): Promise<Job> => {
   throw new Error("Job not inserted");
 };
 
-const deleteJob = async (req: Request): Promise<boolean> => {
+const deleteJob = async (req: any): Promise<boolean> => {
   if (!isValidId(req.params.id)) throw new Error("Invalid job id");
+  const rawJob: RawJob | null = await findOneJob(req.params.id);
+  if (!rawJob) throw new Error("Invalid job");
+  const query = {
+    $pullAll: {
+      jobs: [rawJob._id],
+    },
+  };
+  await updateApplication(
+    {
+      user: req.userData.userId,
+    },
+    query
+  );
 
   const { deletedCount } = await removeJob(req.params.id);
   if (deletedCount > 0) {
     return true;
   }
-  throw new Error("Job not found");
+  throw new Error("Job not deleted");
 };
 
 const applyJob = async (req: any): Promise<boolean> => {
@@ -74,7 +87,6 @@ const applyJob = async (req: any): Promise<boolean> => {
     if (!application) throw new Error("Job not applied");
     return true;
   }
-
   if (application.jobs.includes(req.params.id))
     throw new Error("Job already applied");
 
@@ -83,16 +95,19 @@ const applyJob = async (req: any): Promise<boolean> => {
       jobs: req.params.id,
     },
   };
-  const { modifiedCount } = await updateApplication(req.userData.userId, query);
+  const { modifiedCount } = await updateApplication(
+    { user: req.userData.userId },
+    query
+  );
   if (modifiedCount > 0) return true;
 
   throw new Error("Job not applied");
 };
 
 const getAppliedJob = async (req: any) => {
-  const rawApplication: RawApplicationJob | null = await findApplications(
-    req.userData.userId
-  );
+  const rawApplication: RawApplicationJob | null = await findApplications({
+    user: req.userData.userId,
+  });
   if (rawApplication) {
     const appliedJobs: Array<Job> = rawApplication.jobs.map(convert);
     return appliedJobs;
