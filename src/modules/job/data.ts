@@ -1,9 +1,11 @@
 import JobSchema from "./schema/job";
-import ApplicationSchema from "../job-application/schema/application";
 import { Job, RawJob } from "./types";
 
-export async function findJobs(query: any): Promise<RawJob[]> {
-  const users = await JobSchema.find(query);
+export async function findJobs(query: any, limit:number = 0, page:number=1, fields:string=''): Promise<RawJob[]> {
+  const users = await JobSchema.find(query)
+    .limit(limit)
+    .skip((page - 1) * limit)
+    .select(fields);
   return users;
 }
 
