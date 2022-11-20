@@ -26,12 +26,6 @@ const job = {
     "http://localhost:3000/src/assets/1668832065090screencapture-mail-google-mail-u-0-2022-11-03-10_45_49.png",
 };
 
-const rawApplication:any = {
-  _id: new ObjectId("45643b41294b379c837ecd2b"),
-  user: new ObjectId("46785b41244b379c837ecd2b"),
-  jobs: [new ObjectId("63785b41294b379c837ecd2b")]
-};
-
 describe("job.service.getJobs()", () => {
   let mockRequest = {};
   const dbJobsResponse = [
@@ -130,7 +124,6 @@ describe("job.service.getJob()", () => {
     await expect(service.getJob(mockRequest)).rejects.toThrow("Job not found");
   });
 });
-
 describe("job.service.saveJob()", () => {
   let mockRequest: any = {
     body: {

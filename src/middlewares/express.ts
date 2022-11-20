@@ -4,11 +4,13 @@ import route from "../route";
 import express from "express";
 import mongoConnect from "../db/mongo";
 import swaggerUi from "swagger-ui-express";
-const swaggerDocument = require("./swagger.json");
+import morgan from "morgan";
+
+const swaggerDocument = require("../../swagger.json");
 
 const appMiddleware = function (app: Application) {
   app.use(json());
-
+  app.use(morgan("dev"));
   app.use("/src/assets", express.static("src/assets"));
 
   // Mongo DB conncection
@@ -18,7 +20,7 @@ const appMiddleware = function (app: Application) {
   //All defined endpoints
   route(app);
 
-  app.use((req: Request, res:Response, next:NextFunction) => {
+  app.use((req: Request, res: Response, next: NextFunction) => {
     const error: any = new Error("Page not found!");
     error.status = 404;
     next(error);

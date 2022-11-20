@@ -1,13 +1,13 @@
 import { findOneUser, findUsers, insertUser } from "./data";
 import { Request } from "express";
-import { User, RawUser, RoleEnum } from "./types/user";
+import { User, RawUser } from "./types/user";
 import convert from "./helpers/convert";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "../../config/common";
 import userValidator from "./helpers/user-validator";
 import { isValidId } from "../../utils/common";
-
+import loginValidator from "./helpers/login-validator";
 
 const getUsers = async (req: Request): Promise<User[]> => {
   const rawUsers: Array<RawUser> = await findUsers({});
@@ -25,7 +25,6 @@ const getUser = async (req: any): Promise<User> => {
   throw new Error("User not found");
 };
 
-
 const saveUser = async (req: any): Promise<User> => {
   const user: User = {
     firstName: req.body.firstName,
@@ -37,7 +36,7 @@ const saveUser = async (req: any): Promise<User> => {
   userValidator(user);
   const checkUser = await findUsers({ email: req.body.email });
   if (checkUser.length > 0) throw new Error("User already exists");
-  
+
   const hashedPassword = await bcrypt.hash(req.body.password, 10);
   user.password = hashedPassword;
   const insertedUser: RawUser | null = await insertUser(user);
@@ -48,6 +47,7 @@ const saveUser = async (req: any): Promise<User> => {
 };
 
 const login = async (req: Request) => {
+  loginValidator({ email: req.body.email, password: req.body.password });
   const checkUser = await findUsers({ email: req.body.email });
   if (checkUser.length === 0) throw new Error("Invalid credentials");
 

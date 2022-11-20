@@ -1,0 +1,480 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Job Portal REST APIs",
+    "description": "API documentation for Job Portal",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/api/v1",
+  "schemes": ["http"],
+  "consumes": ["application/json", "multipart/form-data"],
+  "produces": ["application/json"],
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter the token with the `Bearer: ` prefix, e.g. 'Bearer abcde12345'"
+    }
+  },
+
+  "paths": {
+    "/jobs": {
+      "get": {
+        "tags": ["Job"],
+        "summary": "Get all available jobs in the job portal",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "schema": {
+              "$ref": "#/definitions/Jobs"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Job"],
+        "summary": "Create new job in the job portal",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "title",
+            "type": "string",
+            "required": true,
+            "description": "Title of the job."
+          },
+          {
+            "in": "formData",
+            "name": "description",
+            "type": "string",
+            "required": true,
+            "description": "Description of the job."
+          },
+          {
+            "in": "formData",
+            "name": "active",
+            "type": "boolean",
+            "required": true,
+            "description": "Job status."
+          },
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "required": true,
+            "description": "The image to upload."
+          },
+          {
+            "in": "formData",
+            "name": "company",
+            "type": "string",
+            "required": true,
+            "description": "Job offered company."
+          },
+          {
+            "in": "formData",
+            "name": "salary",
+            "type": "number",
+            "required": true,
+            "description": "Salary paid for the job."
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/JobResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/jobs/{id}": {
+      "get": {
+        "tags": ["Job"],
+        "summary": "Get job details by job id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "jobId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/JobResponse"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Job"],
+        "summary": "Delete job by job id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "jobId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/MessageResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get all users in the system",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/users/my-profile": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user profile details",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/users/signup": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create a new user to the system",
+        "parameters": [
+          {
+            "name": "Request body",
+            "in": "body",
+            "description": "Signup request",
+            "schema": {
+              "$ref": "#/definitions/SignupRequest"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "201": {
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Login to the system",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Request body",
+            "description": "User credentials",
+            "schema": {
+              "type": "object",
+              "required": ["email", "password"],
+              "properties": {
+                "email": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/me/apply-job/{jobId}": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Apply for a job by job id",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Job ID",
+            "in": "path",
+            "description": "ID of the job needs to applied for"
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/MessageResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/users/me/applied-job": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get all the jobs applied by the user",
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": {
+              "$ref": "#/definitions/AppliedJobsResponse"
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Job": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "company": {
+          "type": "string"
+        },
+        "salary": {
+          "type": "number"
+        },
+        "postedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "GetJobsResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "image": {
+          "type": "string"
+        },
+        "company": {
+          "type": "string"
+        },
+        "postedAt": {
+          "type": "string"
+        }
+      }
+    },
+    "Jobs": {
+      "type": "object",
+      "properties": {
+        "isError": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/GetJobsResponse"
+          }
+        }
+      }
+    },
+    "JobResponse": {
+      "type": "object",
+      "properties": {
+        "isError": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "object",
+          "$ref": "#/definitions/Job"
+        }
+      }
+    },
+    "MessageResponse": {
+      "type": "object",
+      "properties": {
+        "isError": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        }
+      }
+    },
+    "Users": {
+      "type": "object",
+      "properties": {
+        "isError": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/User"
+          }
+        }
+      }
+    },
+    "UserResponse": {
+      "type": "object",
+      "properties": {
+        "isError": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "object",
+          "$ref": "#/definitions/User"
+        }
+      }
+    },
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "isError": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "userId": {
+              "type": "string"
+            },
+            "token": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "SignupRequest": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        }
+      }
+    },
+    "AppliedJobsResponse": {
+      "type": "object",
+      "properties": {
+        "isError": {
+          "type": "boolean"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Job"
+          }
+        }
+      }
+    }
+  }
+}

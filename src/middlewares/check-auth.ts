@@ -5,7 +5,7 @@ import config from "../config/common";
 
 const checkToken = async (req: any, res: Response, next: NextFunction) => {
   try {
-    if (!req.headers.authorization) throw new Error("Unauthorized");
+    if (!req.headers.authorization) throw new Error();
     const token = req.headers.authorization.split(" ")[1];
     const decoded = jwt.verify(token, config.jwt.secret);
     req.userData = decoded;
@@ -23,8 +23,8 @@ const checkAdmin = async (req: any, res: Response, next: NextFunction) => {
       throw new Error("Unauthorized");
     next();
   } catch (error) {
-    return res.status(401).json({
-      message: "Auth failed",
+    return res.status(403).json({
+      message: "Forbidden",
     });
   }
 };

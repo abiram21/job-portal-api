@@ -27,8 +27,8 @@ export const saveJob = async (req: any, res: Response) => {
     const job: Job = await service.saveJob(req);
     res.status(201).json(successResponse(job));
   } catch (error: any) {
-    if(req?.file?.path) fs.unlinkSync(req.file.path);
-    
+    if (req?.file?.path) fs.unlinkSync(req.file.path);
+
     res.status(400).json(errorResponse(error.message));
   }
 };

@@ -28,6 +28,8 @@ export async function findOneApplication(
 }
 
 export async function findApplications(query: any) {
-  const application: RawApplicationJob | null = await ApplicationSchema.findOne(query).populate("jobs");
+  const application: RawApplicationJob | null = await ApplicationSchema.findOne(
+    query
+  ).populate("jobs");
   return application;
 }

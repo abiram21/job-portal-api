@@ -8,7 +8,6 @@ const convert = (rawUser: RawUser) => {
     email: rawUser.email,
     role: rawUser.role,
     createdAt: rawUser.createdAt,
-
   };
   return user;
 };

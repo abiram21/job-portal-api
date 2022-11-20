@@ -53,7 +53,9 @@ export const applyJob = async (req: Request, res: Response) => {
 
 export const getAppliedJobs = async (req: Request, res: Response) => {
   try {
-    const application: Array<Job> = await applicationService.getAppliedJobs(req);
+    const application: Array<Job> = await applicationService.getAppliedJobs(
+      req
+    );
     res.status(200).json(successResponse(application));
   } catch (error: any) {
     res.status(400).json(errorResponse(error.message));

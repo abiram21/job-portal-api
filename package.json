@@ -6,8 +6,10 @@
   "scripts": {
     "start": "npm run build && node src-js/index.js",
     "start:dev": "ts-node-dev src/index.ts",
-    "test": "jest",
-    "build": "tsc"
+    "build": "tsc",
+    "test:unit": "jest",
+    "test":"npm run test:unit",
+    "lint:fix": "prettier --write 'src/**/*.ts'"
   },
   "keywords": [
     "nodejs",
@@ -34,9 +36,13 @@
     "@types/express": "^4.17.14",
     "@types/jest": "^29.2.3",
     "@types/jsonwebtoken": "^8.5.9",
+    "@types/morgan": "^1.9.3",
     "@types/multer": "^1.4.7",
     "@types/swagger-ui-express": "^4.1.3",
+    "eslint": "^8.28.0",
+    "eslint-config-prettier": "^8.5.0",
     "jest": "^29.3.1",
+    "prettier": "^2.7.1",
     "ts-jest": "^29.0.3",
     "ts-node-dev": "^2.0.0",
     "typescript": "^4.9.3"

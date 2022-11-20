@@ -5,4 +5,4 @@ export interface RawApplicationJob {
   _id?: ObjectId;
   userId: ObjectId;
   jobs: RawJob[];
-};
+}

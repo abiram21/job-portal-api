@@ -4,4 +4,4 @@ export interface RawApplication {
   _id?: ObjectId;
   userId: ObjectId;
   jobs: ObjectId[];
-};
+}
